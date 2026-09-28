@@ -1,0 +1,6 @@
+@SupermarketSalesAPI_HostAddress = http://localhost:5104
+
+GET {{SupermarketSalesAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
