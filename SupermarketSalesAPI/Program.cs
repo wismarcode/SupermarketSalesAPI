@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using SupermarketSalesAPI.Data;
 using SupermarketSalesAPI.Repositories.CategoryRepositories;
+using SupermarketSalesAPI.Services.CategoryServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 var app = builder.Build();
 
