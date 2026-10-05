@@ -1,4 +1,5 @@
-﻿using SupermarketSalesAPI.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using SupermarketSalesAPI.Data;
 using SupermarketSalesAPI.Models;
 
 namespace SupermarketSalesAPI.Repositories.CategoryRepositories
@@ -13,34 +14,35 @@ namespace SupermarketSalesAPI.Repositories.CategoryRepositories
             _context = context;
         }
 
-        public Task<Category> CreateCategoryAsync(Category category)
+        public async Task CreateCategoryAsync(Category category)
         {
-            _context.Categories.AddAsync(category);
+           await  _context.Categories.AddAsync(category);
         }
 
         public void DeleteCategoryAsync(Category category)
         {
-            throw new NotImplementedException();
+            _context.Categories.Remove(category);
         }
 
-        public Task<IEnumerable<Category>> GetCategoriesAsync()
+        public async Task<IEnumerable<Category>> GetCategoriesAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Categories.AsNoTracking().ToListAsync();
+        }
+        
+
+        public async Task<Category?> GetCategoryByIdAsync(int id)
+        {
+            return await _context.Categories.FirstOrDefaultAsync(c => c.CategoryId == id);
         }
 
-        public Task<Category?> GetCategoryByIdAsync(int id)
+        public async Task SaveChangesAsync()
         {
-            throw new NotImplementedException();
-        }
-
-        public Task SaveChangesAsync()
-        {
-            throw new NotImplementedException();
+            await _context.SaveChangesAsync();
         }
 
         public void UpdateCategoryAsync(Category category)
         {
-            throw new NotImplementedException();
+            _context.Categories.Update(category);
         }
     }
 }
