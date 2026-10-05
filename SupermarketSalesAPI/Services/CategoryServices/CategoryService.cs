@@ -8,7 +8,12 @@ namespace SupermarketSalesAPI.Services.CategoryServices
     {
         private readonly ICategoryRepository _categoryRepository;
 
-        public async Task<CategoryDto?> CreateCategoryAsync(CreateCategoryDto createCategoryDto)
+        public CategoryService(ICategoryRepository categoryRepository)
+        {
+            _categoryRepository = categoryRepository;
+        }
+
+        public async Task<CategoryDto> CreateCategoryAsync(CreateCategoryDto createCategoryDto)
         {
             var category = new Category
             {
@@ -51,7 +56,7 @@ namespace SupermarketSalesAPI.Services.CategoryServices
         }
         
 
-        public async Task<CategoryDto?> GetCategoryByIdAsync(int categoryId)
+        public async Task<CategoryDto> GetCategoryByIdAsync(int categoryId)
         {
             var category = await _categoryRepository.GetCategoryByIdAsync(categoryId);
             if (category == null)

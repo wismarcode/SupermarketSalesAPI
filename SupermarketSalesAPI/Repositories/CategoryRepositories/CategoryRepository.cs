@@ -16,7 +16,7 @@ namespace SupermarketSalesAPI.Repositories.CategoryRepositories
 
         public async Task CreateCategoryAsync(Category category)
         {
-           await  _context.Categories.AddAsync(category);
+           await _context.Categories.AddAsync(category);
         }
 
         public void DeleteCategoryAsync(Category category)
