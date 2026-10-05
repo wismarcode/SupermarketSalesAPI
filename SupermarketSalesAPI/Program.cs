@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using SupermarketSalesAPI.Data;
+using SupermarketSalesAPI.Repositories.BranchRepositories;
 using SupermarketSalesAPI.Repositories.CategoryRepositories;
+using SupermarketSalesAPI.Services.BranchServices;
 using SupermarketSalesAPI.Services.CategoryServices;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +20,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IBranchRepository, BranchRepository>();
+builder.Services.AddScoped<IBranchService, BranchService>();
 
 var app = builder.Build();
 
