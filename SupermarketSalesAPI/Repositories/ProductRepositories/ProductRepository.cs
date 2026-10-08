@@ -13,7 +13,7 @@ namespace SupermarketSalesAPI.Repositories.ProductRepositories
             _context = context;
         }
 
-        public async Task CreateProduct(Product product)
+        public async Task CreateProductAsync(Product product)
         {
             await _context.Products.AddAsync(product);
         }
@@ -23,17 +23,17 @@ namespace SupermarketSalesAPI.Repositories.ProductRepositories
             _context.Products.Remove(product);
         }
 
-        public async Task<IEnumerable<Product>> GetAllProducts()
+        public async Task<IEnumerable<Product>> GetAllProductsAsync()
         {
             return await _context.Products.AsNoTracking().ToListAsync();
         }
 
-        public async Task<Product?> GetProductById(int productId)
+        public async Task<Product?> GetProductByIdAsync(int productId)
         {
             return await _context.Products.Include(p => p.Category).FirstOrDefaultAsync(p => p.ProductId == productId);
         }
 
-        public async Task SaveChanges()
+        public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
         }
