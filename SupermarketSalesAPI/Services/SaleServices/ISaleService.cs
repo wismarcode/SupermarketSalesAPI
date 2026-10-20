@@ -7,9 +7,9 @@ namespace SupermarketSalesAPI.Services.SaleServices
         Task<IEnumerable<SaleDto>> GetAllSalesAsync();
         Task<SaleDto?> GetSaleByIdAsync(int id);
         Task<SaleDto> CreateSaleAsync(CreateSaleDto createSaleDto);
-        Task<bool> PaySaleAsync(int id);
-        Task<bool> CancelSaleAsync(int id);
-        Task<bool> UpdateSaleDetailAsync(int saleId, int detailId, UpdateSaleDetailDto updateSaleDetailDto);
-        Task<bool> DeleteSaleAsync(int id);
+        Task PaySaleAsync(int id);
+        Task CancelSaleAsync(int id);
+        Task UpdateSaleDetailAsync(int saleId, int detailId, UpdateSaleDetailDto updateSaleDetailDto);
+        Task DeleteSaleAsync(int id);
     }
 }

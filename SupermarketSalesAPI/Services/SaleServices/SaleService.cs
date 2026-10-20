@@ -17,21 +17,19 @@ namespace SupermarketSalesAPI.Services.SaleServices
             _productRepository = productRepository;
         }
 
-        public async Task<bool> CancelSaleAsync(int id)
+        public async Task CancelSaleAsync(int id)
         {
             var sale = await _saleRepository.GetSaleByIdAsync(id);
 
             if (sale == null)
             {
-                return false;
+                throw new KeyNotFoundException($"Sale with ID {id} not found.");
             }
 
             sale.Status = SaleStatus.Cancelled;
 
             _saleRepository.CancelSale(sale);
             await _saleRepository.SaveChangesAsync();
-
-            return true;
         }
 
         public async Task<SaleDto> CreateSaleAsync(CreateSaleDto createSaleDto)
@@ -48,7 +46,12 @@ namespace SupermarketSalesAPI.Services.SaleServices
             {
 
                 var product = await _productRepository.GetProductByIdAsync(item.ProductId);
-                
+
+                if (product == null)
+                {
+                    throw new KeyNotFoundException($"Product with ID {item.ProductId} not found.");
+                }
+
 
                 var detail = new SaleDetail
                 {
@@ -77,24 +80,20 @@ namespace SupermarketSalesAPI.Services.SaleServices
                 BranchId = sale.BranchId,
             };
 
-
-
-
         }
 
-        public async Task<bool> DeleteSaleAsync(int id)
+        public async Task DeleteSaleAsync(int id)
         {
             var sale = await _saleRepository.GetSaleByIdAsync(id);
 
             if (sale == null)
             {
-                return false;
+                throw new KeyNotFoundException($"Sale with ID {id} not found.");
             }
 
             _saleRepository.DeleteSale(sale);
             await _saleRepository.SaveChangesAsync();
 
-            return true;
         }
 
         public async Task<IEnumerable<SaleDto>> GetAllSalesAsync()
@@ -141,37 +140,35 @@ namespace SupermarketSalesAPI.Services.SaleServices
 
         }
 
-        public async Task<bool> PaySaleAsync(int id)
+        public async Task PaySaleAsync(int id)
         {
             var sale = await _saleRepository.GetSaleByIdAsync(id);
 
             if (sale == null)
             {
-                return false;
+                throw new KeyNotFoundException($"Sale with ID {id} not found.");
             }
 
             sale.Status = SaleStatus.Paid;
 
             _saleRepository.PaySale(sale);
             await _saleRepository.SaveChangesAsync();
-
-            return true;
         }
 
-        public async Task<bool> UpdateSaleDetailAsync(int id, int detailId, UpdateSaleDetailDto updateSaleDetailDto)
+        public async Task UpdateSaleDetailAsync(int id, int detailId, UpdateSaleDetailDto updateSaleDetailDto)
         {
             var sale = await _saleRepository.GetSaleByIdAsync(id);
 
             if (sale == null)
             {
-                return false;
+                throw new KeyNotFoundException($"Sale with ID {id} not found.");
             }
 
-            var detail = sale.SaleDetail!.FirstOrDefault(d => d.SaleDetailId == detailId);
+            var detail = sale.SaleDetail.FirstOrDefault(d => d.SaleDetailId == detailId);
 
             if (detail == null)
             {
-                return false;
+                throw new KeyNotFoundException($"Sale detail with ID {detailId} not found.");
             }
 
             detail.ProductId = updateSaleDetailDto.ProductId;
@@ -186,8 +183,6 @@ namespace SupermarketSalesAPI.Services.SaleServices
 
             _saleRepository.UpdateSaleDetail(sale);
             await _saleRepository.SaveChangesAsync();
-
-            return true;
         }
     }
 }

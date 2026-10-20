@@ -38,57 +38,77 @@ namespace SupermarketSalesAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Sale>> CreateSale(CreateSaleDto createSaleDto)
         {
-            var createdSale = await _saleService.CreateSaleAsync(createSaleDto);
-            return CreatedAtAction(nameof(GetSaleById), new { id = createdSale.SaleId }, createdSale);
+            try
+            {
+                var createdSale = await _saleService.CreateSaleAsync(createSaleDto);
+                return CreatedAtAction(nameof(GetSaleById), new { id = createdSale.SaleId }, createdSale);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+
         }
 
         [HttpPut("{id}/cancellation")]
         public async Task<ActionResult> CancelSaleAsync(int id)
         {
-            var sale = await _saleService.CancelSaleAsync(id);
-            if (sale == false)
+
+            try
             {
-                return NotFound();
+                await _saleService.CancelSaleAsync(id);
+                return NoContent();
+
             }
-
-            await _saleService.CancelSaleAsync(id);
-
-            return NoContent();
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
 
         }
 
         [HttpPut("{id}/payment")]
         public async Task<ActionResult> PaySaleAsync(int id)
         {
-            var sale = await _saleService.PaySaleAsync(id);
-            if (sale == false)
+            try
             {
-                return NotFound();
-            }
+                await _saleService.PaySaleAsync(id);
+                return NoContent();
 
-            return NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpPut("{id}/detail/{detailId}")]
         public async Task<ActionResult> UpdateSaleDetailAsync(int id, int detailId, UpdateSaleDetailDto updateSaleDetailDto)
         {
-            var sale = await _saleService.UpdateSaleDetailAsync(id, detailId, updateSaleDetailDto);
-            if (sale == false)
+            try
             {
-                return NotFound();
+                await _saleService.UpdateSaleDetailAsync(id, detailId, updateSaleDetailDto);
+                return NoContent();
             }
-            return NoContent();
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteSaleAsync(int id)
         {
-            var sale = await _saleService.DeleteSaleAsync(id);
-            if (sale == false)
+            try
             {
-                return NotFound();
+                await _saleService.DeleteSaleAsync(id);
+                return NoContent();
+
             }
-            return NoContent();
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
     }
