@@ -3,9 +3,11 @@ using SupermarketSalesAPI.Data;
 using SupermarketSalesAPI.Repositories.BranchRepositories;
 using SupermarketSalesAPI.Repositories.CategoryRepositories;
 using SupermarketSalesAPI.Repositories.ProductRepositories;
+using SupermarketSalesAPI.Repositories.SaleRepositories;
 using SupermarketSalesAPI.Services.BranchServices;
 using SupermarketSalesAPI.Services.CategoryServices;
 using SupermarketSalesAPI.Services.ProductServices;
+using SupermarketSalesAPI.Services.SaleServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +28,8 @@ builder.Services.AddScoped<IBranchRepository, BranchRepository>();
 builder.Services.AddScoped<IBranchService, BranchService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ISaleRepository, SaleRepository>();
+builder.Services.AddScoped<ISaleService, SaleService>();
 
 var app = builder.Build();
 
