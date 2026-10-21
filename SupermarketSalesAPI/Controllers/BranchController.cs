@@ -42,19 +42,29 @@ namespace SupermarketSalesAPI.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateBranch(int id, UpdateBranchDto updateBranchDto)
         {
-            var result = await _branchService.UpdateBranch(id, updateBranchDto);
-            if (!result)
-                return NotFound();
-            return Ok();
+            try
+            {
+                await _branchService.UpdateBranch(id, updateBranchDto);
+                return NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteBranch(int id)
         {
-            var result = await _branchService.DeleteBranch(id);
-            if (!result)
-                return NotFound();
-            return Ok();
+            try
+            {
+                await _branchService.DeleteBranch(id);
+                return NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
     }
 }

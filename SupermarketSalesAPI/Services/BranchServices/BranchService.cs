@@ -32,17 +32,16 @@ namespace SupermarketSalesAPI.Services.BranchServices
             };
         }
 
-        public async Task<bool> DeleteBranch(int id)
+        public async Task DeleteBranch(int id)
         {
             var branch = await _branchRepository.GetBranchById(id);
 
             if (branch == null)
-                return false;
+                throw new KeyNotFoundException($"Branch with ID {id} not found.");
 
             _branchRepository.DeleteBranch(branch);
             await _branchRepository.SaveChanges();
 
-            return true;
         }
 
         public async Task<IEnumerable<BranchDto>> GetAll()
@@ -70,11 +69,11 @@ namespace SupermarketSalesAPI.Services.BranchServices
             };
         }
 
-        public async Task<bool> UpdateBranch(int id, UpdateBranchDto updateBranchDto)
+        public async Task UpdateBranch(int id, UpdateBranchDto updateBranchDto)
         {
             var branch = await _branchRepository.GetBranchById(id);
             if (branch == null)
-                return false;
+                throw new KeyNotFoundException($"Branch with ID {id} not found.");
 
             branch.Name = updateBranchDto.Name;
             branch.Address = updateBranchDto.Address;
@@ -82,7 +81,6 @@ namespace SupermarketSalesAPI.Services.BranchServices
             _branchRepository.UpdateBranch(branch);
             await _branchRepository.SaveChanges();
 
-            return true;
         }
     }
 }

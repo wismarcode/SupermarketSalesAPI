@@ -7,7 +7,7 @@ namespace SupermarketSalesAPI.Services.BranchServices
         Task<IEnumerable<BranchDto>> GetAll();
         Task<BranchDto> GetById(int id);
         Task<BranchDto> CreateBranch(CreateBranchDto CreateBranchDto);
-        Task<bool> UpdateBranch(int id, UpdateBranchDto updateBranchDto);
-        Task<bool> DeleteBranch(int id);
+        Task UpdateBranch(int id, UpdateBranchDto updateBranchDto);
+        Task DeleteBranch(int id);
     }
 }
