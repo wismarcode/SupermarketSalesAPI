@@ -44,22 +44,31 @@ namespace SupermarketSalesAPI.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateCategory(int id, UpdateCategoryDto updateCategoryDto)
         {
-            var category = await _categoryService.GetCategoryByIdAsync(id);
-            if (category == null)
-                return NotFound();
+            try
+            {
+                await _categoryService.UpdateCategoryAsync(id, updateCategoryDto);
+                return NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
 
-            await _categoryService.UpdateCategoryAsync(id, updateCategoryDto);
-            return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteCategory(int id)
         {
-            var category = await _categoryService.GetCategoryByIdAsync(id);
-            if (category == null)
-                return NotFound();
-            await _categoryService.DeleteCategoryAsync(id);
-            return NoContent();
+            try
+            {
+                await _categoryService.DeleteCategoryAsync(id);
+                return NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            
         }
 
     }

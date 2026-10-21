@@ -7,7 +7,7 @@ namespace SupermarketSalesAPI.Services.CategoryServices
         Task<IEnumerable<CategoryDto>> GetAllCategoriesAsync();
         Task<CategoryDto> GetCategoryByIdAsync(int categoryId);
         Task<CategoryDto> CreateCategoryAsync(CreateCategoryDto createCategoryDto);
-        Task<bool> UpdateCategoryAsync(int categoryId, UpdateCategoryDto updateCategoryDto);
-        Task<bool> DeleteCategoryAsync(int categoryId);
+        Task UpdateCategoryAsync(int categoryId, UpdateCategoryDto updateCategoryDto);
+        Task DeleteCategoryAsync(int categoryId);
     }
 }

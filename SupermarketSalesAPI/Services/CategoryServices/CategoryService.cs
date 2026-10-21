@@ -33,15 +33,14 @@ namespace SupermarketSalesAPI.Services.CategoryServices
             };
         }
 
-        public async Task<bool> DeleteCategoryAsync(int categoryId)
+        public async Task DeleteCategoryAsync(int categoryId)
         {
             var category = await _categoryRepository.GetCategoryByIdAsync(categoryId);
             if (category == null)
-                return false;
+                throw new KeyNotFoundException($"Category with ID {categoryId} not found");
 
             _categoryRepository.DeleteCategoryAsync(category);
             await _categoryRepository.SaveChangesAsync();
-            return true;
         }
 
         public async Task<IEnumerable<CategoryDto>> GetAllCategoriesAsync()
@@ -70,18 +69,17 @@ namespace SupermarketSalesAPI.Services.CategoryServices
             };
         }
 
-        public async Task<bool> UpdateCategoryAsync(int categoryId, UpdateCategoryDto updateCategoryDto)
+        public async Task UpdateCategoryAsync(int categoryId, UpdateCategoryDto updateCategoryDto)
         {
             var category = await _categoryRepository.GetCategoryByIdAsync(categoryId);
             if (category == null)
-                return false;
+                throw new KeyNotFoundException($"Category with ID {categoryId} not found");
 
             category.Name = updateCategoryDto.Name;
             category.Description = updateCategoryDto.Description;
 
             _categoryRepository.UpdateCategoryAsync(category);
             await _categoryRepository.SaveChangesAsync();
-            return true;
         }
     }
 }
