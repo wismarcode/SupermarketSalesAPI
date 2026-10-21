@@ -42,23 +42,35 @@ namespace SupermarketSalesAPI.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<ProductDto>> UpdateProduct(int id, UpdateProductDto updateProductDto)
         {
-            var product = await _productService.GetProductByIdAsync(id);
-            if (product == null)
-                return NotFound();
-
-            var updatedProduct = await _productService.UpdateProductAsync(id, updateProductDto);
-            return NoContent();
+            try
+            {
+                await _productService.UpdateProductAsync(id, updateProductDto);
+                return NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteProduct(int id)
         {
-            var product = await _productService.GetProductByIdAsync(id);
-            if (product == null)
-                return NotFound();
 
-            await _productService.DeleteProductAsync(id);
-            return NoContent();
+            try
+            {
+                await _productService.DeleteProductAsync(id);
+                return NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+
+            
+
+            
         }
     }
 }

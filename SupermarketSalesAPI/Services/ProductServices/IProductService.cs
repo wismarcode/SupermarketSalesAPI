@@ -7,7 +7,7 @@ namespace SupermarketSalesAPI.Services.ProductServices
         Task<IEnumerable<ProductDto>> GetAllProductsAsync();
         Task<ProductDto?> GetProductByIdAsync(int productId);
         Task<ProductDto> CreateProductAsync(CreateProductDto createProductDto);
-        Task<bool> UpdateProductAsync(int productId, UpdateProductDto updateProductDto);
-        Task<bool> DeleteProductAsync(int productId);
+        Task UpdateProductAsync(int productId, UpdateProductDto updateProductDto);
+        Task DeleteProductAsync(int productId);
     }
 }

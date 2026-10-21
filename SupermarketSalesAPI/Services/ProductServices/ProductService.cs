@@ -40,15 +40,14 @@ namespace SupermarketSalesAPI.Services.ProductServices
             };
         }
 
-        public async Task<bool> DeleteProductAsync(int productId)
+        public async Task DeleteProductAsync(int productId)
         {
             var product = await _productRepository.GetProductByIdAsync(productId);
             if (product == null)
-                return false;
+                throw new KeyNotFoundException($"Product with ID {productId} not found.");
 
             _productRepository.DeleteProduct(product);
             await _productRepository.SaveChangesAsync();
-            return true;
         }
 
         public async Task<IEnumerable<ProductDto>> GetAllProductsAsync()
@@ -90,12 +89,12 @@ namespace SupermarketSalesAPI.Services.ProductServices
 
         }
 
-        public async Task<bool> UpdateProductAsync(int productId, UpdateProductDto updateProductDto)
+        public async Task UpdateProductAsync(int productId, UpdateProductDto updateProductDto)
         {
             var product = await _productRepository.GetProductByIdAsync(productId);
 
             if (product == null)
-                return false;
+                throw new KeyNotFoundException($"Product with ID {productId} not found.");
 
             product.Name = updateProductDto.Name;
             product.Price = updateProductDto.Price;
@@ -106,7 +105,6 @@ namespace SupermarketSalesAPI.Services.ProductServices
             _productRepository.UpdateProduct(product);
             await _productRepository.SaveChangesAsync();
 
-            return true;
         }
     }
 }
