@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SupermarketSalesAPI.DTOs.BranchDTOs;
 using SupermarketSalesAPI.Services.BranchServices;
@@ -10,10 +11,14 @@ namespace SupermarketSalesAPI.Controllers
     public class BranchController : ControllerBase
     {
         private readonly IBranchService _branchService;
+        private readonly IValidator<CreateBranchDto> _createBranchValidator;
+        private readonly IValidator<UpdateBranchDto> _updateBranchValidator;
 
-        public BranchController(IBranchService branchService)
+        public BranchController(IBranchService branchService, IValidator<CreateBranchDto> createBranchValidator, IValidator<UpdateBranchDto> updateBranchValidator)
         {
             _branchService = branchService;
+            _createBranchValidator = createBranchValidator;
+            _updateBranchValidator = updateBranchValidator;
         }
 
         [HttpGet]
@@ -35,6 +40,13 @@ namespace SupermarketSalesAPI.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateBranch(CreateBranchDto createBranchDto)
         {
+            var validationResult = await _createBranchValidator.ValidateAsync(createBranchDto);
+
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
+            }
+
             var branch = await _branchService.CreateBranch(createBranchDto);
             return CreatedAtAction(nameof(GetBranchById), new { id = branch.BranchId }, branch);
         }
@@ -42,6 +54,13 @@ namespace SupermarketSalesAPI.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateBranch(int id, UpdateBranchDto updateBranchDto)
         {
+            var validationResult = await _updateBranchValidator.ValidateAsync(updateBranchDto);
+
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
+            }
+
             try
             {
                 await _branchService.UpdateBranch(id, updateBranchDto);
