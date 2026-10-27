@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SupermarketSalesAPI.DTOs.ProductDTOs;
 using SupermarketSalesAPI.Services.ProductServices;
@@ -10,10 +11,16 @@ namespace SupermarketSalesAPI.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;
+        private readonly IValidator<CreateProductDto> _createValidator;
+        private readonly IValidator<UpdateProductDto> _updateValidator;
 
-        public ProductController(IProductService productService)
+        public ProductController(IProductService productService, 
+            IValidator<UpdateProductDto> updateValidator,
+            IValidator<CreateProductDto> createValidator)
         {
             _productService = productService;
+            _updateValidator = updateValidator;
+            _createValidator = createValidator;
         }
 
         [HttpGet]
@@ -35,6 +42,11 @@ namespace SupermarketSalesAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<ProductDto>> CreateProduct(CreateProductDto createProductDto)
         {
+            var result = await _createValidator.ValidateAsync(createProductDto);
+
+            if (!result.IsValid)
+                return BadRequest(result.Errors);
+
             var createdProduct = await _productService.CreateProductAsync(createProductDto);
             return CreatedAtAction(nameof(GetProductById), new { id = createdProduct.ProductId }, createdProduct);
         }
@@ -42,6 +54,12 @@ namespace SupermarketSalesAPI.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<ProductDto>> UpdateProduct(int id, UpdateProductDto updateProductDto)
         {
+
+            var result = await _updateValidator.ValidateAsync(updateProductDto);
+
+            if (!result.IsValid)
+                return BadRequest(result.Errors);
+
             try
             {
                 await _productService.UpdateProductAsync(id, updateProductDto);
