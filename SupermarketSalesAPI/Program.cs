@@ -1,6 +1,7 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using SupermarketSalesAPI.Data;
+using SupermarketSalesAPI.DTOs.CategoryDTOs;
 using SupermarketSalesAPI.DTOs.ProductDTOs;
 using SupermarketSalesAPI.Repositories.BranchRepositories;
 using SupermarketSalesAPI.Repositories.CategoryRepositories;
@@ -10,6 +11,7 @@ using SupermarketSalesAPI.Services.BranchServices;
 using SupermarketSalesAPI.Services.CategoryServices;
 using SupermarketSalesAPI.Services.ProductServices;
 using SupermarketSalesAPI.Services.SaleServices;
+using SupermarketSalesAPI.Validations.CategoryValidations;
 using SupermarketSalesAPI.Validations.ProductValidations;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -37,6 +39,8 @@ builder.Services.AddScoped<ISaleService, SaleService>();
 
 builder.Services.AddScoped<IValidator<CreateProductDto>, CreateProductValidator>();
 builder.Services.AddScoped<IValidator<UpdateProductDto>, UpdateProductValidator>();
+builder.Services.AddScoped<IValidator<CreateCategoryDto>, CreateCategoryValidator>();
+builder.Services.AddScoped<IValidator<UpdateCategoryDto>, UpdateCategoryValidator>();
 
 
 var app = builder.Build();
