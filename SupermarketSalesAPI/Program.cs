@@ -4,6 +4,7 @@ using SupermarketSalesAPI.Data;
 using SupermarketSalesAPI.DTOs.BranchDTOs;
 using SupermarketSalesAPI.DTOs.CategoryDTOs;
 using SupermarketSalesAPI.DTOs.ProductDTOs;
+using SupermarketSalesAPI.DTOs.SaleDTOs;
 using SupermarketSalesAPI.Repositories.BranchRepositories;
 using SupermarketSalesAPI.Repositories.CategoryRepositories;
 using SupermarketSalesAPI.Repositories.ProductRepositories;
@@ -15,6 +16,7 @@ using SupermarketSalesAPI.Services.SaleServices;
 using SupermarketSalesAPI.Validations.BranchValidations;
 using SupermarketSalesAPI.Validations.CategoryValidations;
 using SupermarketSalesAPI.Validations.ProductValidations;
+using SupermarketSalesAPI.Validations.SaleValidations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +47,10 @@ builder.Services.AddScoped<IValidator<CreateCategoryDto>, CreateCategoryValidato
 builder.Services.AddScoped<IValidator<UpdateCategoryDto>, UpdateCategoryValidator>();
 builder.Services.AddScoped<IValidator<CreateBranchDto>, CreateBranchValidator>();
 builder.Services.AddScoped<IValidator<UpdateBranchDto>, UpdateBranchValidator>();
+builder.Services.AddScoped<IValidator<CreateSaleDto>, CreateSaleValidator>();
+builder.Services.AddScoped<IValidator<CreateSaleDetailDto>, CreateSaleDetailValidator>();
+builder.Services.AddScoped<IValidator<UpdateSaleDetailDto>, UpdateSaleDetailValidator>();
+
 
 var app = builder.Build();
 
